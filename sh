@@ -1,6 +1,8 @@
 #!/bin/sh
 
-#to execute, curl -L [url] | sh
+#to execute, curl -L [url] | sh or similar with wget
+
+mv "$0" installer.sh
 
 echo -e "\n\n\n\n\nBenvenuto, questa è una versione limitata del già piccolo Alpine linux, perciò a breve incomincerà l'installazione di risosrse utili e personalizzazioni per sopperire all'assenza di JIT (just in time) imposta da iPadOS."
 echo
