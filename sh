@@ -15,7 +15,7 @@ echo "è pregato di avviare nuovamente l'installatore quando le condizioni saran
 exit 0
 fi
 
-n=10
+n=11
 
 echo -e "\nAggiornamento apk:    (1/$n)"
 apk update
@@ -29,13 +29,16 @@ apk add micro
 echo -e "\nAggiunta Java 8    	 (4/$n)"
 apk add openjdk8 java-common
 
-echo -e "\nEssenziali: 		     (5/$n)"
+echo -e "\nAggiunta nano    	 (5/$n)"
+apk add nano
+
+echo -e "\nEssenziali: 		     (6/$n)"
 apk add sl
-echo -e "					     (6/$n)"
+echo -e "					     (7/$n)"
 apk add cmatrix
 
 
-echo -e "\nImpostazione profile: (7/$n)"
+echo -e "\nImpostazione profile: (8/$n)"
 
 cat << 'EOF' > ~/.profile
 
@@ -47,7 +50,7 @@ EOF
 
 
 
-echo -e "\nImpostazione ashrc:   (8/$n)"
+echo -e "\nImpostazione ashrc:   (9/$n)"
 
 cat << 'EOF' > ~/.ashrc
 
@@ -84,9 +87,9 @@ javaB() {
 
 EOF
 
-echo -e "\nImportante configurazione (9/$n)"
+echo -e "\nImportante configurazione (10/$n)"
 source ~/.ashrc
-echo -e "\nAltra altrettanto         (10/$n)"
+echo -e "\nAltra altrettanto         (11/$n)"
 source ~/.profile
 
 
