@@ -1,5 +1,5 @@
 #!/bin/sh
-
+ 
 #to execute, sh sh
 mv "$0" installer.sh
 
