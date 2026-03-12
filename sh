@@ -55,6 +55,17 @@ cat << 'EOF' > ~/.ashrc
 
 
 
+if [ "$(wget -qO- https://boninif.github.io/ISH/updated)" != "6" ]; then
+    echo "updating..."
+
+   cd ~
+    wget https://boninif.github.io/ISH/sh
+    sh sh
+
+    exit
+fi
+
+
 alias micro='GOGC=off micro'
 alias java='/usr/lib/jvm/java-1.8-openjdk/bin/java -Xms64m -Xmx128m -Xint'
 alias javac='/usr/lib/jvm/java-1.8-openjdk/bin/javac -J-Xms64m -J-Xmx128m -J-Xint'
