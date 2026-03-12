@@ -53,7 +53,7 @@ EOF
 echo -e "\nImpostazione ashrc:   (9/$n)"
 
 
-version=$(wget -qO- https://boninif.github.io/ish/updated)
+version=$(wget -qO- https://boninif.github.io/ISH/updated)
 echo "SH_VERSION=\"$version\"" > ~/.ashrc
 
 cat << 'EOF' >> ~/.ashrc
