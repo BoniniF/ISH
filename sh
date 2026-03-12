@@ -55,11 +55,13 @@ echo -e "\nImpostazione ashrc:   (9/$n)"
 cat << 'EOF' > ~/.ashrc
 
 
+
 alias micro='GOGC=off micro'
 alias java='/usr/lib/jvm/java-1.8-openjdk/bin/java -Xms64m -Xmx128m -Xint'
 alias javac='/usr/lib/jvm/java-1.8-openjdk/bin/javac -J-Xms64m -J-Xmx128m -J-Xint'
 
 # Funzione per compilare ed eseguire
+
 javaB() {
     [ -z "$1" ] && { echo "Uso: javaB <file>.java [argomenti...]"; return 1; }
 
@@ -69,11 +71,9 @@ javaB() {
     DIR=$(dirname "$FILE")
     MAIN=$(basename "$FILE" .java)
 
-    cd "$DIR" || return 1
-
     NEEDS_COMPILE=false
 
-    for f in $(find . -name "*.java"); do
+    for f in $(find "$DIR" -name "*.java"); do
         class="${f%.java}.class"
 
         if [ ! -f "$class" ] || [ "$f" -nt "$class" ]; then
@@ -83,11 +83,13 @@ javaB() {
     done
 
     if [ "$NEEDS_COMPILE" = true ]; then
-        find . -name "*.java" | xargs javac -J-Xms64m -J-Xmx128m -J-Xint || return 1
+        find "$DIR" -name "*.java" | xargs javac \
+            -J-Xms64m -J-Xmx128m -J-Xint || return 1
     fi
 
-    java -Xms64m -Xmx128m -Xint "$MAIN" "$@"
+    java -Xms64m -Xmx128m -Xint -cp "$DIR" "$MAIN" "$@"
 }
+
 
 EOF
 
