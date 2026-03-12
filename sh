@@ -54,36 +54,40 @@ echo -e "\nImpostazione ashrc:   (9/$n)"
 
 cat << 'EOF' > ~/.ashrc
 
+
 alias micro='GOGC=off micro'
 alias java='/usr/lib/jvm/java-1.8-openjdk/bin/java -Xms64m -Xmx128m -Xint'
 alias javac='/usr/lib/jvm/java-1.8-openjdk/bin/javac -J-Xms64m -J-Xmx128m -J-Xint'
 
-# Funzione per compilare ed eseguire al volo
+# Funzione per compilare ed eseguire
 javaB() {
-	            [ -z "$1" ] && { echo "Uso: javaB <nomeFile>.java [argomenti...]"; return 1; }
+    [ -z "$1" ] && { echo "Uso: javaB <file>.java [argomenti...]"; return 1; }
 
-	                                FILE=$1
-	                                                        CLASS_NAME="${FILE%.java}"
-	                                                                                    shift # Rimuove il nome del file, lasciando in $@ solo i tuoi argomenti
+    FILE="$1"
+    shift
 
-	                                                                                                                        NEEDS_COMPILE=false
+    DIR=$(dirname "$FILE")
+    MAIN=$(basename "$FILE" .java)
 
-	                                                                                                                                                                # 1. Verifica se qualche .java è più nuovo del relativo .class
-	                                                                                                                                                                                                            for f in *.java; do
-	                                                                                                                                                                                                                                                                if [ ! -f "${f%.java}.class" ] || [ "$f" -nt "${f%.java}.class" ]; then
-	                                                                                                                                                                                                                                                                                                                                NEEDS_COMPILE=true
-	                                                                                                                                                                                                                                                                                                                                                                                                            break
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                fi
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        done
+    cd "$DIR" || return 1
 
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    # 2. Compila solo se necessario
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if [ "$NEEDS_COMPILE" = true ]; then
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            /usr/lib/jvm/java-1.8-openjdk/bin/javac -J-Xms64m -J-Xmx128m -J-Xint *.java || return 1
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        fi
+    NEEDS_COMPILE=false
 
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        # 3. Esegue passando tutti i restanti argomenti ($@)
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            /usr/lib/jvm/java-1.8-openjdk/bin/java -Xms64m -Xmx128m -Xint "$CLASS_NAME" "$@"
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+    for f in $(find . -name "*.java"); do
+        class="${f%.java}.class"
+
+        if [ ! -f "$class" ] || [ "$f" -nt "$class" ]; then
+            NEEDS_COMPILE=true
+            break
+        fi
+    done
+
+    if [ "$NEEDS_COMPILE" = true ]; then
+        find . -name "*.java" | xargs javac -J-Xms64m -J-Xmx128m -J-Xint || return 1
+    fi
+
+    java -Xms64m -Xmx128m -Xint "$MAIN" "$@"
+}
 
 EOF
 
