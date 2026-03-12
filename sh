@@ -1,6 +1,7 @@
 #!/bin/sh
- 
-#to execute, sh sh
+
+#to execute, curl -L [url] | sh or similar with wget
+
 mv "$0" installer.sh
 
 echo -e "\n\n\n\n\nBenvenuto, questa è una versione limitata del già piccolo Alpine linux, perciò a breve incomincerà l'installazione di risosrse utili e personalizzazioni per sopperire all'assenza di JIT (just in time) imposta da iPadOS."
@@ -51,17 +52,21 @@ EOF
 
 echo -e "\nImpostazione ashrc:   (9/$n)"
 
-cat << 'EOF' > ~/.ashrc
+
+version=$(wget -qO- https://boninif.github.io/ish/updated)
+echo "SH_VERSION=\"$version\"" > ~/.ashrc
+
+cat << 'EOF' >> ~/.ashrc
 
 
+REMOTE_VERSION=$(wget -qO- https://boninif.github.io/ISH/updated 2>/dev/null)
 
-if [ "$(wget -qO- https://boninif.github.io/ISH/updated)" != "6" ]; then
-    echo "updating..."
-
+if [ -n "$(wget -qO- https://boninif.github.io/ISH/updated 2>/dev/null)" ] && [ "$(wget -qO- https://boninif.github.io/ISH/updated 2>/dev/null)" != "$SH_VERSION" ]; then
+    echo "Nuova versione disponibile ($REMOTE_VERSION). Aggiornamento..."
+    
    cd ~
-    wget https://boninif.github.io/ISH/sh
+    wget -q https://boninif.github.io/ISH/sh
     sh sh
-
     exit
 fi
 
@@ -104,12 +109,12 @@ javaB() {
 EOF
 
 echo -e "\nImportante configurazione (10/$n)"
-source ~/.ashrc
+
 echo -e "\nAltra altrettanto         (11/$n)"
 source ~/.profile
 
 
-echo -e "\nInstallazione completata con successo, almeno così mi auguro"
+echo -e "\nInstallazione completata con successo, almeno così mi auguroooooooooooo"
 
 cmatrix
 
