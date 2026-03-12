@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#to execute, curl -L [url] | sh or similar with wget
+#to execute, sh sh
 
 mv "$0" installer.sh
 
@@ -109,12 +109,12 @@ javaB() {
 EOF
 
 echo -e "\nImportante configurazione (10/$n)"
-
+source ~/.ashrc
 echo -e "\nAltra altrettanto         (11/$n)"
 source ~/.profile
 
 
-echo -e "\nInstallazione completata con successo, almeno così mi auguroooooooooooo"
+echo -e "\nInstallazione completata con successo, o perlomeno così mi auguro"
 
 cmatrix
 
