@@ -15,6 +15,10 @@ echo "è pregato di avviare nuovamente l'installatore quando le condizioni saran
 exit 0
 fi
 
+echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut -d. -f1,2)/main" > /etc/apk/repositories
+echo "http://dl-cdn.alpinelinux.org/alpine/v$(cat /etc/alpine-release | cut -d. -f1,2)/community" >> /etc/apk/repositories
+
+
 n=11
 
 echo -e "\nAggiornamento apk:    (1/$n)"
